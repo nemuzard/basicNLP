@@ -12,15 +12,16 @@ BP神经网络由以下两个组成：
 - Testing data: 10000
 - 黑白图，28*28，数字0-9
 - 数字越大位置的颜色越白，0 代表黑色
+![Untitled](https://github.com/nemuzard/basicNLP/assets/44145324/abc04b8e-0012-4944-82f4-6fc819cf0a78)
 
-![Untitled](BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(Backpropagation)%20f3d9d1197866432dbc7772f089b16fd2/Untitled.png)
 
 - 数据集解析：给每一个28*28 变成一个1*784的形状（拉平），这个被认定为图片的特征， 最后就是60000*728
     - 这种做法实现了降维
 
 ## 分类任务实现逻辑
 
-![Untitled](BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(Backpropagation)%20f3d9d1197866432dbc7772f089b16fd2/Untitled%201.png)
+![Untitled 1](https://github.com/nemuzard/basicNLP/assets/44145324/033154dc-0e0c-46de-9b80-9fb9fdeeaee3)
+
 
 - 图片分类和文本分类的实现逻辑是一样的
 - 我们要做的事情是给28*28的图转换成一个1*1的数字
@@ -34,7 +35,7 @@ BP神经网络由以下两个组成：
     
 - 所以更新第二步， 变成1*784的矩阵*W（784*10）最后的结果是一个1*10 的矩阵，取一个最大的所在下标
 
-![Untitled](BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(Backpropagation)%20f3d9d1197866432dbc7772f089b16fd2/Untitled%202.png)
+![Untitled 2](https://github.com/nemuzard/basicNLP/assets/44145324/fbf06b93-2562-41f5-b063-d29ad60207f1)
 
 - BP会再×一个矩阵
 - 那么loss怎么算？ 1*10的矩阵和1*1的矩阵，如果只算最大值的下标的话，那是没办法求导的，所以要用one-hot
@@ -43,12 +44,13 @@ BP神经网络由以下两个组成：
 
 - 在我们的例子中，给1*1的label，改成1*10的矩阵，在对应下标标记1，其余位置0
 
-![Untitled](BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(Backpropagation)%20f3d9d1197866432dbc7772f089b16fd2/Untitled%203.png)
+![Untitled 3](https://github.com/nemuzard/basicNLP/assets/44145324/fbb454c7-99f8-4fa7-af9e-4e32923fa399)
+
 
 - pre数组里，2的位置无限向1学习，其他位置无限像0学习，但是特别的大的数字向0，1converge是很难的，所以我们要改造一下预测值
 - 给pre（我们的预测）加入softmax激活函数
 
-![Untitled](BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(Backpropagation)%20f3d9d1197866432dbc7772f089b16fd2/Untitled%204.png)
+![Untitled 4](https://github.com/nemuzard/basicNLP/assets/44145324/5706f2d2-0758-4d8c-988c-0e7d7969133f)
 
 - 非负数，和为1，里面的值有概率的意思
 - 用softmax改造之后的值去学习
@@ -57,17 +59,19 @@ BP神经网络由以下两个组成：
 
 - 用于多分类
 
-![Untitled](BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(Backpropagation)%20f3d9d1197866432dbc7772f089b16fd2/Untitled%205.png)
+![Untitled 5](https://github.com/nemuzard/basicNLP/assets/44145324/0896740f-fd43-4e81-8da3-eec3148b9e6a)
+
 
 - 对于非负数，归一化很简单，只需要计算出每一项的占比：A/(A+B+C)
 - 负数：所以用exp(-X) 如果x是负数， 那么占比就变成exp(A)/(exp(A)+exp(B)+exp(-x))
 
-![Untitled](BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(Backpropagation)%20f3d9d1197866432dbc7772f089b16fd2/Untitled%206.png)
+![Untitled 6](https://github.com/nemuzard/basicNLP/assets/44145324/053090a2-a615-43fd-a77e-68672b1fcd54)
+
 
 - exp 会放大个体差距，缩小小的，所以整体的差距会变大
 - 选择用e是因为方便求导
 
-![Untitled](BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(Backpropagation)%20f3d9d1197866432dbc7772f089b16fd2/Untitled%207.png)
+![Untitled 7](https://github.com/nemuzard/basicNLP/assets/44145324/53939a09-240d-4b92-ad90-d3837be9349d)
 
 x是输入层，w2是分类层
 
@@ -86,23 +90,25 @@ w1是一个线性层，也就是矩阵相乘，得到一个hidden（隐层的特
 
 考虑batch size
 
-![Untitled](BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(Backpropagation)%20f3d9d1197866432dbc7772f089b16fd2/Untitled%208.png)
+![Untitled 8](https://github.com/nemuzard/basicNLP/assets/44145324/9fc039b9-f52e-46e3-a75d-d9f95f3d3431)
+
 
 假设拿了3个图片，那么x就变成3*784了，h也变，这个变化是一个动态的变化过程
 
 <aside>
 👻 sigmoid, softmax都可以给数字变成0-1之间，softmax多了一个去负
-
 </aside>
 
-## BP Backward
+![Untitled 9](https://github.com/nemuzard/basicNLP/assets/44145324/5ecdb056-4787-4116-92f0-5ef8de226a21)
 
-![Untitled](BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(Backpropagation)%20f3d9d1197866432dbc7772f089b16fd2/Untitled%209.png)
+
+## BP Backward
 
 - 深度学习实际上是一个不断更新参数的过程，我们这里要更新w1和w2→ backward先从后面算，先算的是w2 导数从pre算起
 - h = x@w1, sig_h = sigmoid(h), p = sig_h @ w2, pre = softmax(p), loss = label * log(pre) + (1-label)*log(1-pre)
     
-    [详细这里](https://www.notion.so/58044e8fee8442ef8cfa34797657a488?pvs=21)
+   ![image](https://github.com/nemuzard/basicNLP/assets/44145324/e2a99c2b-5c09-4127-b795-be6d5d5a024f)
+
     
 - 先求loss对pre的导数，然后p
 - $G_2 = \partial loss/\partial p = \partial loss/\partial pre * \partial pre/\partial p = pre - label$ 3*10
@@ -130,7 +136,8 @@ import numpy as np
 
 </aside>
 
-![Untitled](BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C(Backpropagation)%20f3d9d1197866432dbc7772f089b16fd2/Untitled%2010.png)
+![Untitled 10](https://github.com/nemuzard/basicNLP/assets/44145324/aa91aef1-418d-450f-9e43-0883a249f931)
+
 
 在图像处理领域中，图像数据除以 255 是一种常见的做法，这主要是为了进行所谓的归一化处理。这里的归一化指的是将数据缩放到一个固定的范围（通常是 0 到 1）
 
